@@ -27,9 +27,16 @@
                        on-feedback="playgroundCtrl.openFeedbackForm()"
                        on-close="playgroundCtrl.beforeClose()"
                        on-preparation-picker="playgroundCtrl.showPreparationPicker()"
+                       is-readonly="playgroundCtrl.state.playground.isReadOnly"
     ></playground-header>
-
-    <div class="playground" ng-if="!playgroundCtrl.state.playground.isLoading">
+    <div id="playground-readonly-container"
+         ng-if="playgroundCtrl.state.playground.isReadOnly && !playgroundCtrl.state.playground.isLoading">
+        <span class="playground-header-eye-icon"><icon name="'talend-eye'" /></span>
+        <span translate-once="READ_ONLY"></span>
+    </div>
+    <div class="playground"
+         ng-if="!playgroundCtrl.state.playground.isLoading"
+         ng-class="{'playground-readonly': playgroundCtrl.state.playground.isReadOnly}">
         <talend-slidable class="playground-recipe slide-hide"
                          visible="playgroundCtrl.state.playground.recipe.visible"
                          side="left">

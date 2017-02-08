@@ -51,6 +51,19 @@ describe('Playground state service', () => {
         spyOn(RecipeStateService, 'reset').and.returnValue();
     }));
 
+    describe('readonly mode', () => {
+        it('should set readonly mode in state', inject((playgroundState, PlaygroundStateService) => {
+            //given
+            expect(playgroundState.isReadOnly).toBe(false);
+
+            //when
+            PlaygroundStateService.setReadOnlyMode(true);
+
+            //then
+            expect(playgroundState.isReadOnly).toBe(true);
+        }));
+    });
+
     describe('dataset', () => {
         it('should set dataset metadata in state', inject((playgroundState, PlaygroundStateService) => {
             //given

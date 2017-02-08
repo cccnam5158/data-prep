@@ -345,6 +345,7 @@
   "_comment": "playground",
   "CHOOSE_PREPARATION_TO_APPLY": "Choose a preparation to apply to this dataset",
   "NO_COMPATIBLE_PREPARATIONS": "There are no compatible preparations with the dataset: {{name}}",
+  "READ_ONLY": "Read Only",
 
   "_comment": "Confirm Popup",
   "SAVE_CHANGE": "Do you want to save your changes?",

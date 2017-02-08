@@ -28,6 +28,12 @@ $switch-border-background: darken($base-background-color, 9%);
 $switch-shadow: 0 2px 5px transparentize(black, 0.6);
 $slide-action-background: $base-background-color;
 
+$playground-header-readonly-height: 30px;
+$playground-readonly-icon-size: 20px !default;
+$playground-readonly-icon-color: $white !default;
+$playground-readonly-icon-padding: 10px !default;
+
+
 @mixin slidable-action-bar {
 	.action {
 		background: $slide-action-background;
@@ -153,7 +159,9 @@ $slide-action-background: $base-background-color;
 	$navigation-border: 1px;
 	$navigation-height: 50px;
 	$navigation-all-height: ($navigation-height + $navigation-border);
+	$navigation-readonly-all-height: ($navigation-all-height + $playground-header-readonly-height);
 	$playground-height: '100vh - ' + $navigation-all-height;
+	$playground-readonly-height: '100vh - ' + $navigation-readonly-all-height;
 
 	height: 100vh;
 	@include flex-column();
@@ -162,6 +170,25 @@ $slide-action-background: $base-background-color;
 		flex-basis: $navigation-all-height;
 		flex-grow: 0;
 		flex-shrink: 0;
+	}
+
+	#playground-readonly-container {
+		@include flex-row-center();
+		color: $white;
+		background: $medium-gray;
+		height: $playground-header-readonly-height;
+
+		.playground-header-eye-icon {
+			height: $playground-header-readonly-height;
+			padding: ($playground-header-readonly-height - $playground-readonly-icon-size)/2 $playground-readonly-icon-padding;
+
+			svg {
+				height: $playground-readonly-icon-size;
+				width: $playground-readonly-icon-size;
+				fill: $playground-readonly-icon-color;
+				shape-rendering: auto;
+			}
+		}
 	}
 
 	.playground {
@@ -176,6 +203,18 @@ $slide-action-background: $base-background-color;
 		@include recipe-layout();
 		@include playground-center-layout();
 		@include suggestions-layout();
+
+		#suggestions-stats-details {
+			@include calc('height', $playground-height);
+		}
+
+		&.playground-readonly {
+			@include calc('height', $playground-readonly-height);
+
+			#suggestions-stats-details {
+				@include calc('height', $playground-readonly-height);
+			}
+		}
 	}
 }
 
