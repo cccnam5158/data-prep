@@ -12,7 +12,7 @@
   ============================================================================*/
 const SuggestionsStats = {
 	template: `
-    <div id="suggestions-stats-details">
+    <div class="suggestions-stats-details">
 		<div class="suggestions-title" ng-switch="suggestionsStatsCtrl.state.playground.grid.selectedColumns.length > 1">
 			<span class="title"
 				  title="{{suggestionsStatsCtrl.state.playground.grid.selectedColumns[0].name}}"
@@ -26,16 +26,9 @@ const SuggestionsStats = {
 				  translate-values="{nb: suggestionsStatsCtrl.state.playground.grid.selectedColumns.length}">
 			</span>
 		</div>
-		<sc-splitter orientation="vertical" ng-if="suggestionsStatsCtrl.state.playground.isReadOnly === false">
-			<sc-split-first-pane id="help-suggestions">
-				<actions-suggestions class="suggestions-part"></actions-suggestions>
-			</sc-split-first-pane>
-			<sc-split-second-pane id="help-stats">
-				<stats-details class="stats-part"></stats-details>
-			</sc-split-second-pane>
-		</sc-splitter>
-		<stats-details class="playground-readonly stats-part" ng-if="suggestionsStatsCtrl.state.playground.isReadOnly === true"></stats-details>
+		<ng-transclude></ng-transclude>
     </div>`,
+	transclude: true,
 	controllerAs: 'suggestionsStatsCtrl',
 	controller(state) {
 		this.state = state;

@@ -11,31 +11,10 @@
 
   ============================================================================*/
 
-#suggestions-stats-details {
+.suggestions-stats-details {
 	border-left: 2px solid $super-light-gray;
 	display: flex;
 	flex-direction: column;
-
-	.suggestions-title {
-		flex-basis: 58px;
-		flex-grow: 0;
-		flex-shrink: 0;
-
-		background-color: #F1F1F1;
-		padding-right: 20px;
-
-		.title {
-			@include ellipsis(320px);
-			font-size: 1.2em;
-			font-weight: 600;
-			padding: 25px 10px 5px 10px;
-			text-transform: uppercase;
-		}
-	}
-
-	.playground-readonly .stat-detail-tab-items{
-		width: 330px;
-	}
 
 	.loading-container {
 		position: relative;

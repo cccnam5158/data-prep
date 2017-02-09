@@ -32,6 +32,7 @@
  */
 
 import { map } from 'lodash';
+import { PLAYGROUND_PREPARATION_ROUTE, PLAYGROUND_DATASET_ROUTE } from '../../index-route';
 
 // actions scopes
 const LINE = 'line';
@@ -300,16 +301,15 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 
 		return PreparationService.getDetails(state.playground.preparation.id)
 			.then((preparation) => {
-				const recipeWasEmpty = !state.playground.recipe.current.steps.length;
 				RecipeService.refresh(preparation);
-				const recipeIsEmpty = !state.playground.recipe.current.steps.length;
 
-				if (recipeWasEmpty && !recipeIsEmpty) {
+				if ($state.$current.name === PLAYGROUND_DATASET_ROUTE && state.playground.recipe.current.steps.length) {
 					StateService.showRecipe();
-					$state.go('playground.preparation', { prepid: preparation.id });
+					$state.go(PLAYGROUND_PREPARATION_ROUTE, { prepid: preparation.id });
 				}
 
-				if (OnboardingService.shouldStartTour('recipe') &&
+				if (!state.playground.isReadOnly &&
+					OnboardingService.shouldStartTour('recipe') &&
 					state.playground.recipe.current.steps.length >= 3) {
 					StateService.showRecipe();
 					$timeout(OnboardingService.startTour('recipe'), 300, false);
@@ -359,7 +359,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 		else {
 			promise = PreparationService.create(state.playground.dataset.id, name, state.inventory.homeFolderId)
 				.then((prepid) => {
-					$state.go('playground.preparation', { prepid });
+					$state.go(PLAYGROUND_PREPARATION_ROUTE, { prepid });
 					return PreparationService.getDetails(prepid);
 				});
 		}

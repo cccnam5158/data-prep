@@ -29,34 +29,21 @@
                        on-preparation-picker="playgroundCtrl.showPreparationPicker()"
                        is-readonly="playgroundCtrl.state.playground.isReadOnly"
     ></playground-header>
-    <div id="playground-readonly-container"
-         ng-if="playgroundCtrl.state.playground.isReadOnly && !playgroundCtrl.state.playground.isLoading">
-        <span class="playground-header-eye-icon"><icon name="'talend-eye'" /></span>
-        <span translate-once="READ_ONLY"></span>
-    </div>
     <div class="playground"
-         ng-if="!playgroundCtrl.state.playground.isLoading"
-         ng-class="{'playground-readonly': playgroundCtrl.state.playground.isReadOnly}">
+         ng-if="!playgroundCtrl.state.playground.isLoading">
         <talend-slidable class="playground-recipe slide-hide"
                          visible="playgroundCtrl.state.playground.recipe.visible"
                          side="left">
             <!-- Recipe Header -->
-            <div class="steps-header" id="help-preparation-name" ng-switch="playgroundCtrl.state.playground.isReadOnly">
-                <talend-editable-text ng-switch-when="false"
-                                      edition-mode="playgroundCtrl.state.playground.nameEditionMode"
+            <div class="steps-header" id="help-preparation-name">
+                <talend-editable-text edition-mode="playgroundCtrl.state.playground.nameEditionMode"
                                       on-validate="playgroundCtrl.confirmPrepNameEdition(text)"
                                       placeholder="ENTER_PREPARATION_NAME"
                                       text="playgroundCtrl.state.playground.preparationName"
                                       text-class="steps-header-preparation-text"
                                       text-title="{{playgroundCtrl.state.playground.preparationName}}">
                 </talend-editable-text>
-                <span ng-switch-when="true"
-                      title="{{playgroundCtrl.state.playground.preparationName}}"
-                      ng-bind="playgroundCtrl.state.playground.preparationName"
-                      class="steps-header-preparation-text">
-                </span>
             </div>
-
             <!-- Recipe -->
             <recipe id="help-recipe" ng-if="playgroundCtrl.state.playground.data"></recipe>
         </talend-slidable>
@@ -97,7 +84,16 @@
         <talend-slidable class="playground-suggestions"
                          visible="true"
                          side="right">
-            <suggestions-stats></suggestions-stats>
+            <suggestions-stats>
+                <sc-splitter class="suggestions-stats-content" orientation="vertical">
+                    <sc-split-first-pane id="help-suggestions">
+                        <actions-suggestions class="suggestions-part"></actions-suggestions>
+                    </sc-split-first-pane>
+                    <sc-split-second-pane id="help-stats">
+                        <stats-details class="stats-part"></stats-details>
+                    </sc-split-second-pane>
+                </sc-splitter>
+            </suggestions-stats>
         </talend-slidable>
     </div>
 </div>

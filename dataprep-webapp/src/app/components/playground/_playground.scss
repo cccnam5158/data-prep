@@ -28,12 +28,6 @@ $switch-border-background: darken($base-background-color, 9%);
 $switch-shadow: 0 2px 5px transparentize(black, 0.6);
 $slide-action-background: $base-background-color;
 
-$playground-header-readonly-height: 30px;
-$playground-readonly-icon-size: 20px !default;
-$playground-readonly-icon-color: $white !default;
-$playground-readonly-icon-padding: 10px !default;
-
-
 @mixin slidable-action-bar {
 	.action {
 		background: $slide-action-background;
@@ -163,12 +157,17 @@ $playground-readonly-icon-padding: 10px !default;
 //-----------------------------------------------------BODY--------------------------------------------------
 //-----------------------------------------------------------------------------------------------------------
 .playground-container {
+	$playground-header-readonly-height: 30px;
+	$playground-readonly-icon-size: 20px !default;
+	$playground-readonly-icon-color: $white !default;
+	$playground-readonly-icon-padding: 10px !default;
+
 	$navigation-border: 1px;
 	$navigation-height: 50px;
 	$navigation-all-height: ($navigation-height + $navigation-border);
-	$navigation-readonly-all-height: ($navigation-all-height + $playground-header-readonly-height);
-	$playground-height: '100vh - ' + $navigation-all-height;
-	$playground-readonly-height: '100vh - ' + $navigation-readonly-all-height;
+	$playground-height: '100vh - ' + ($navigation-all-height);
+	$playground-suggestions-stats-details: '100vh - ' + (2*$navigation-height + $navigation-border);
+	$playground-suggestions-stats-readonly-details: '100vh - ' + ($playground-suggestions-stats-details + $playground-header-readonly-height);
 
 	height: 100vh;
 	@include flex-column();
@@ -211,15 +210,32 @@ $playground-readonly-icon-padding: 10px !default;
 		@include playground-center-layout();
 		@include suggestions-layout();
 
-		#suggestions-stats-details {
-			@include calc('height', $playground-height);
-		}
+		.playground-suggestions {
+			.suggestions-title {
+				height: $navigation-height;
+				background-color: #F1F1F1;
 
-		&.playground-readonly {
-			@include calc('height', $playground-readonly-height);
+				.title {
+					@include ellipsis(320px);
+					font-size: 1.2em;
+					font-weight: 600;
+					padding: 15px 15px 15px 10px;
+					text-transform: uppercase;
+				}
+			}
+			.suggestions-stats-content {
+				@include calc('height', $playground-suggestions-stats-details);
+				width: 330px;
+			}
 
-			#suggestions-stats-details {
-				@include calc('height', $playground-readonly-height);
+			.playground-readonly {
+				.suggestions-stats-content {
+					@include calc('height', $playground-suggestions-stats-readonly-details);
+				}
+			}
+
+			.stat-detail-tab-items {
+				width: 330px;
 			}
 		}
 	}
