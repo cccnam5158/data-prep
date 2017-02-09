@@ -128,16 +128,23 @@ $playground-readonly-icon-padding: 10px !default;
 		}
 
 		.steps-header {
-			display: flex;
+			display: inline-block;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+
 			border-bottom: 1px solid $shadow-gray;
 			padding: $padding-normal $padding-smaller $padding-normal $padding-large;
 
 			talend-editable-text {
 				width: 100%;
+				.edition-text-input {
+					width: 95%;
+				}
 			}
 
 			.steps-header-preparation-text {
-				@include ellipsis(85%);
+				@include ellipsis(95%);
 				font-size: 1.2em;
 				font-weight: 600;
 				text-transform: uppercase;

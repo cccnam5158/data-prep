@@ -41,13 +41,20 @@
                          visible="playgroundCtrl.state.playground.recipe.visible"
                          side="left">
             <!-- Recipe Header -->
-            <div class="steps-header" id="help-preparation-name">
-                <talend-editable-text edition-mode="playgroundCtrl.state.playground.nameEditionMode"
+            <div class="steps-header" id="help-preparation-name" ng-switch="playgroundCtrl.state.playground.isReadOnly">
+                <talend-editable-text ng-switch-when="false"
+                                      edition-mode="playgroundCtrl.state.playground.nameEditionMode"
                                       on-validate="playgroundCtrl.confirmPrepNameEdition(text)"
                                       placeholder="ENTER_PREPARATION_NAME"
                                       text="playgroundCtrl.state.playground.preparationName"
                                       text-class="steps-header-preparation-text"
-                                      text-title="{{playgroundCtrl.state.playground.preparationName}}"></talend-editable-text>
+                                      text-title="{{playgroundCtrl.state.playground.preparationName}}">
+                </talend-editable-text>
+                <span ng-switch-when="true"
+                      title="{{playgroundCtrl.state.playground.preparationName}}"
+                      ng-bind="playgroundCtrl.state.playground.preparationName"
+                      class="steps-header-preparation-text">
+                </span>
             </div>
 
             <!-- Recipe -->
