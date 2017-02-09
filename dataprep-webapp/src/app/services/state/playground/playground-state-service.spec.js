@@ -509,6 +509,7 @@ describe('Playground state service', () => {
             playgroundState.isFetchingStats = true;
             playgroundState.isLoading = true;
             playgroundState.isSavingPreparation = true;
+            playgroundState.isReadOnly = true;
 
             //when
             PlaygroundStateService.reset();
@@ -522,6 +523,7 @@ describe('Playground state service', () => {
             expect(playgroundState.isFetchingStats).toBe(false);
             expect(playgroundState.isLoading).toBe(false);
             expect(playgroundState.isSavingPreparation).toBe(false);
+            expect(playgroundState.isReadOnly).toBe(false);
         }));
 
         it('should reset sub-states', inject((playgroundState, PlaygroundStateService, RecipeStateService, GridStateService, FilterStateService, LookupStateService, SuggestionsStateService, ParametersStateService) => {

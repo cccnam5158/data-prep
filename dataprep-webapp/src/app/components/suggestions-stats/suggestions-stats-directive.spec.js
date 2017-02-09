@@ -11,18 +11,26 @@
 
   ============================================================================*/
 
-describe('Suggestions stats directive', function () {
+describe('Suggestions stats directive', () => {
     'use strict';
 
-    var scope;
-    var createElement;
-    var element;
+    let scope;
+    let createElement;
+    let element;
+    let stateMock;
 
-    beforeEach(angular.mock.module('data-prep.suggestions-stats'));
+    beforeEach(angular.mock.module('data-prep.suggestions-stats', ($provide) => {
+        stateMock = {
+            playground: {
+                grid: {},
+            }
+        };
+        $provide.constant('state', stateMock);
+    }));
 
-    beforeEach(inject(function ($rootScope, $compile, $timeout) {
+    beforeEach(inject(($rootScope, $compile, $timeout) => {
         scope = $rootScope.$new();
-        createElement = function () {
+        createElement = () => {
             element = angular.element('<suggestions-stats></suggestions-stats>');
             $compile(element)(scope);
             scope.$digest();
@@ -30,12 +38,27 @@ describe('Suggestions stats directive', function () {
         };
     }));
 
-    afterEach(function () {
+    afterEach(() => {
         scope.$destroy();
         element.remove();
     });
 
-    it('should render suggestions/stats splitter', inject(function () {
+    it('should set column name in title', () => {
+        //given
+        stateMock.playground.grid.selectedColumns = [{ name: 'Col 1' }];
+
+        //when
+        createElement();
+
+        //then
+        expect(element.find('.title').text().trim()).toBe('Col 1');
+    });
+
+
+    it('should render suggestions/stats splitter', inject(() => {
+        //given
+        stateMock.playground.isReadOnly = false;
+
         //when
         createElement();
 
@@ -43,5 +66,16 @@ describe('Suggestions stats directive', function () {
         expect(element.find('sc-splitter').length).toBe(1);
         expect(element.find('sc-splitter sc-split-first-pane actions-suggestions').length).toBe(1);
         expect(element.find('sc-splitter sc-split-second-pane stats-details').length).toBe(1);
+    }));
+
+    it('should render stats panel when the playground is readonly', inject(() => {
+        //given
+        stateMock.playground.isReadOnly = true;
+
+        //when
+        createElement();
+
+        //then
+        expect(element.find('.playground-readonly').length).toBe(1);
     }));
 });

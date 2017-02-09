@@ -14,20 +14,6 @@
   -->
 
 <div class="actions-suggestions">
-    <div class="suggestions-title" ng-switch="actionsSuggestionsCtrl.state.playground.grid.selectedColumns.length > 1">
-        <span class="title"
-              title="{{actionsSuggestionsCtrl.state.playground.grid.selectedColumns[0].name}}"
-              ng-switch-when="false"
-              ng-if="actionsSuggestionsCtrl.state.playground.grid.selectedColumns[0].name">
-            {{actionsSuggestionsCtrl.state.playground.grid.selectedColumns[0].name}}
-        </span>
-        <span class="title"
-              ng-switch-when="true"
-              translate="MULTI_COLUMNS_SELECTED"
-              translate-values="{nb: actionsSuggestionsCtrl.state.playground.grid.selectedColumns.length}">
-        </span>
-    </div>
-
     <div id="actions-ghost"
          ng-if="actionsSuggestionsCtrl.state.playground.suggestions.isLoading"
          class="loading-container">

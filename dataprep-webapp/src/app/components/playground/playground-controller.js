@@ -285,6 +285,9 @@ export default function PlaygroundCtrl($timeout, $state, $stateParams, state, St
 	function loadPreparation(preparation) {
 		PlaygroundService.load(preparation)
 			.then(() => {
+				//TODO => to remove when preparation version exists
+				StateService.setPlaygroundReadOnlyMode($stateParams.isreadonly === 'true');
+
 				if (shouldFetchStatistics()) {
 					fetchStatistics();
 				}
@@ -332,9 +335,6 @@ export default function PlaygroundCtrl($timeout, $state, $stateParams, state, St
 		if (!shouldReloadPreparation()) {
 			return;
 		}
-
-		//TODO => to remove when preparation version exists
-		StateService.setPlaygroundReadOnlyMode($stateParams.isreadonly === 'true');
 
 		StateService.setIsLoadingPlayground(true);
 		PlaygroundService.startLoader();

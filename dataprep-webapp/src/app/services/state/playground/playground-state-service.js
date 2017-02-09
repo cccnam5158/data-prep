@@ -246,6 +246,7 @@ export function PlaygroundStateService(RecipeStateService, recipeState,
 		playgroundState.lookupData = null;
 		playgroundState.preparation = null;
 		playgroundState.sampleType = 'HEAD';
+		playgroundState.isReadOnly = false;
 
 		RecipeStateService.reset();
 		FilterStateService.reset();
