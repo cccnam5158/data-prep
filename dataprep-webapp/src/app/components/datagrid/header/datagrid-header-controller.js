@@ -63,7 +63,7 @@ export default function DatagridHeaderCtrl($scope, state,
 	 * @description Get transformations from REST call
 	 */
 	vm.initTransformations = function initTransformations() {
-		if (!vm.transformations && !vm.initTransformationsInProgress) {
+		if (!state.playground.isReadOnly && !vm.transformations && !vm.initTransformationsInProgress) {
 			vm.transformationsRetrieveError = false;
 			vm.initTransformationsInProgress = true;
 

@@ -14,7 +14,7 @@
   -->
 
 <div class="grid-header">
-    <div class="talend-dropdown-div">
+    <div class="talend-dropdown-div" ng-if="!datagridHeaderCtrl.state.playground.isReadOnly">
         <sc-dropdown on-open="datagridHeaderCtrl.initTransformations()">
             <sc-dropdown-trigger class="grid-header-caret" title="{{ datagridHeaderCtrl.column.name }}"><icon name="'talend-burger'"/></sc-dropdown-trigger>
             <sc-dropdown-content class="grid-header-menu">
@@ -30,11 +30,10 @@
     </div>
 
     <div class="talend-dropdown-text-div">
-        <div class="grid-header-title" ng-show="!datagridHeaderCtrl.isEditMode" title="{{ datagridHeaderCtrl.column.name }}">{{ datagridHeaderCtrl.column.name }}</div>
-        <form name="datagridHeaderCtrl.columnNameEdition">
+        <div class="grid-header-title" ng-show="datagridHeaderCtrl.state.playground.isReadOnly || !datagridHeaderCtrl.isEditMode" title="{{ datagridHeaderCtrl.column.name }}">{{ datagridHeaderCtrl.column.name }}</div>
+        <form name="datagridHeaderCtrl.columnNameEdition"  ng-show="!datagridHeaderCtrl.state.playground.isReadOnly && datagridHeaderCtrl.isEditMode">
             <input class="grid-header-title-input"
                type="text"
-               ng-show="datagridHeaderCtrl.isEditMode"
                ng-model="datagridHeaderCtrl.newName"
                ng-model-options="{debounce: { 'default': 200, 'blur': 0 }}"/>
         </form>

@@ -159,7 +159,7 @@ export default class DatagridGridService {
         // create grid
 		const options = {
 			autoEdit: false,
-			editable: true,
+			editable: !this.state.playground.isReadOnly,
 			enableAddRow: false,
 			enableCellNavigation: true,
 			enableTextSelectionOnCells: false,
