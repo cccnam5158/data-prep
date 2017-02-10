@@ -32,8 +32,7 @@
  */
 
 import { map } from 'lodash';
-import { PLAYGROUND_PREPARATION_ROUTE, PLAYGROUND_DATASET_ROUTE } from '../../index-route';
-
+import { PLAYGROUND_PREPARATION_ROUTE,PLAYGROUND_DATASET_ROUTE, HOME_DATASETS_ROUTE, HOME_PREPARATIONS_ROUTE} from '../../index-route';
 // actions scopes
 const LINE = 'line';
 
@@ -51,6 +50,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 	'ngInject';
 
 	const INVENTORY_SUFFIX = ' ' + $translate.instant('PREPARATION');
+	let fetchStatsTimeout;
 
 	function wrapInventoryName(invName) {
 		return invName + INVENTORY_SUFFIX;
@@ -62,10 +62,13 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 		stopLoader,
 
 		// init/load
-		initPlayground,     // load dataset
-		load,               // load preparation
+		loadDataset,        // load dataset
+		loadPreparation,    // load preparation
+		initDataset,		// init dataset
+		initPreparation,	// init preparation
 		loadStep,           // load preparation step
 		updateStatistics,   // load column statistics and trigger statistics update
+		close,
 
 		// preparation
 		createOrUpdatePreparation,
@@ -86,6 +89,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 
 		// parameters
 		changeDatasetParameters,
+
 	};
 	return service;
 
@@ -153,13 +157,13 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 
 	/**
 	 * @ngdoc method
-	 * @name initPlayground
+	 * @name loadDataset
 	 * @methodOf data-prep.services.playground.service:PlaygroundService
 	 * @param {object} dataset The dataset to load
 	 * @description Initiate a new preparation from dataset.
 	 * @returns {Promise} The process promise
 	 */
-	function initPlayground(dataset) {
+	function loadDataset(dataset) {
 		startLoader();
 		return DatasetService.getContent(dataset.id, true)
 			.then(data => checkRecords(data))
@@ -169,12 +173,18 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 					$timeout(OnboardingService.startTour('playground'), 300, false);
 				}
 			})
+			.then(() => {
+				if (shouldFetchStatistics()) {
+					fetchStatistics();
+				}
+			})
+			.catch(() => errorGoBack(true, { type: 'dataset' }))
 			.finally(stopLoader);
 	}
 
 	/**
 	 * @ngdoc method
-	 * @name load
+	 * @name loadPreparation
 	 * @methodOf data-prep.services.playground.service:PlaygroundService
 	 * @param {object} preparation - the preparation to load
 	 * @param {string} sampleType - the sample type
@@ -187,7 +197,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 	 </ul>
 	 * @returns {Promise} The process promise
 	 */
-	function load(preparation, sampleType = 'HEAD') {
+	function loadPreparation(preparation, sampleType = 'HEAD') {
 		startLoader();
 		return PreparationService.getContent(preparation.id, 'head', sampleType)
 			.then(data => reset.call(
@@ -197,6 +207,12 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 				preparation,
 				sampleType
 			))
+			.then(() => {
+				if (shouldFetchStatistics()) {
+					fetchStatistics();
+				}
+			})
+			.catch(() => errorGoBack(true, { type: 'preparation' }))
 			.finally(stopLoader);
 	}
 
@@ -729,7 +745,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 					return loadStep(activeStep);
 				}
 				else {
-					initPlayground.call(this, dataset);
+					loadDataset.call(this, dataset);
 				}
 			});
 	}
@@ -762,4 +778,130 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 
 		return data;
 	}
+
+
+	//------------------------------------------------------------------------------------------------------
+	// ----------------------------------------------STATS REFRESH-------------------------------------------
+	//------------------------------------------------------------------------------------------------------
+	/**
+	 * @ngdoc method
+	 * @name shouldFetchStatistics
+	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
+	 * @description Check if we have the statistics or we have to fetch them
+	 */
+	function shouldFetchStatistics() {
+		const columns = state.playground.data.metadata.columns;
+
+		return !columns || !columns.length ||                   // no columns
+			!columns[0].statistics.frequencyTable.length;   // no frequency table implies no async stats computed
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name fetchStatistics
+	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
+	 * @description Fetch the statistics. If the update fails (no statistics yet) a retry is triggered after 1s
+	 */
+	function fetchStatistics() {
+		StateService.setIsFetchingStats(true);
+		updateStatistics()
+			.then(() => StateService.setIsFetchingStats(false))
+			.catch(() => {
+				fetchStatsTimeout = $timeout(fetchStatistics, 1500, false);
+			});
+	}
+
+	//--------------------------------------------------------------------------------------------------------------
+	// ------------------------------------------------INIT----------------------------------------------------------
+	//--------------------------------------------------------------------------------------------------------------
+	/**
+	 * @ngdoc method
+	 * @name errorGoBack
+	 * @description go back to homePage when errors occur
+	 */
+	function errorGoBack(errorDisplay, errorOptions) {
+		if (errorDisplay) {
+			MessageService.error('PLAYGROUND_FILE_NOT_FOUND_TITLE', 'PLAYGROUND_FILE_NOT_FOUND', errorOptions);
+		}
+		$state.go(state.route.previous, state.route.previousOptions);
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name loadPreparation
+	 * @description open a preparation
+	 */
+	function initPreparation() {
+		StateService.setPreviousRoute(
+			HOME_PREPARATIONS_ROUTE,
+			{ folderId: state.inventory.folder.metadata.id }
+		);
+		if (!shouldReloadPreparation()) {
+			return;
+		}
+
+		StateService.setIsLoadingPlayground(true);
+		startLoader();
+		PreparationService.getDetails($stateParams.prepid)
+			.then((preparation) => {
+				loadPreparation.call(this, preparation);
+				return preparation;
+			})
+			.then(preparation => DatasetService.getMetadata(preparation.dataSetId))
+			.then(dataset => StateService.setCurrentDataset(dataset))
+			.catch(() => {
+				stopLoader();
+				return errorGoBack(false);
+			});
+
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name loadDataset
+	 * @description open a dataset
+	 */
+	function initDataset() {
+		StateService.setPreviousRoute(HOME_DATASETS_ROUTE);
+		StateService.setIsLoadingPlayground(true);
+		startLoader();
+		DatasetService.getMetadata($stateParams.datasetid)
+			.then((dataset) => {
+				loadDataset.call(this, dataset);
+				return dataset;
+			})
+			.catch(() => {
+				stopLoader();
+				return errorGoBack(false);
+			});
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name shouldReloadPreparation
+	 * @description Check if the preparation should be reloaded.
+	 * The preparation is not reloaded if (and) :
+	 * - the current playground preparation is the one we want
+	 * - the route param "reload" is not set explicitly to false
+	 */
+	function shouldReloadPreparation() {
+		const currentPrep = state.playground.preparation;
+		if (!currentPrep || $stateParams.prepid !== currentPrep.id) {
+			return true;
+		}
+
+		return $stateParams.reload !== false;
+	}
+
+	/**
+	 * @ngdoc method
+	 * @name close
+	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
+	 * @description Playground close callback. It reset the playground and redirect to the previous page
+	 */
+	function close() {
+		$timeout.cancel(fetchStatsTimeout);
+		$timeout(StateService.resetPlayground, 500, false);
+		$state.go(state.route.previous, state.route.previousOptions);
+	};
 }
