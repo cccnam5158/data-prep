@@ -844,7 +844,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 		startLoader();
 		PreparationService.getDetails($stateParams.prepid)
 			.then((preparation) => {
-				loadPreparation.call(this, preparation);
+				this.loadPreparation.call(this, preparation);
 				return preparation;
 			})
 			.then(preparation => DatasetService.getMetadata(preparation.dataSetId))
@@ -903,5 +903,5 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 		$timeout.cancel(fetchStatsTimeout);
 		$timeout(StateService.resetPlayground, 500, false);
 		$state.go(state.route.previous, state.route.previousOptions);
-	};
+	}
 }

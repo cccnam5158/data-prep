@@ -67,7 +67,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
 	 * @description Toggle preparation picker modal
 	 */
-	vm.showPreparationPicker = function showPreparationPicker() {
+	vm.showPreparationPicker = () => {
 		vm.displayPreparationPicker = true;
 	};
 
@@ -78,7 +78,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
 	 * @description Apply the preparation steps to the current preparation
 	 */
-	vm.applySteps = function applySteps(preparationId) {
+	vm.applySteps = (preparationId) => {
 		return PlaygroundService.copySteps(preparationId)
 			.then(() => {
 				vm.displayPreparationPicker = false;
@@ -94,7 +94,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
 	 * @description Change the preparation name
 	 */
-	vm.confirmPrepNameEdition = function confirmPrepNameEdition(name) {
+	vm.confirmPrepNameEdition = (name) => {
 		const cleanName = name.trim();
 		if (!vm.changeNameInProgress && cleanName) {
 			changeName(cleanName)
@@ -125,7 +125,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
 	 * @description show hides lookup panel and populates its grid
 	 */
-	vm.toggleLookup = function toggleLookup() {
+	vm.toggleLookup = () => {
 		if (state.playground.lookup.visibility) {
 			StateService.setLookupVisibility(false);
 		}
@@ -146,7 +146,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 *     playground close.
 	 * @returns {boolean} True if the playground can be closed (no implicit preparation), False otherwise
 	 */
-	vm.beforeClose = function beforeClose() {
+	vm.beforeClose = () => {
 		const isDraft = state.playground.preparation && state.playground.preparation.draft;
 		if (isDraft) {
 			if (state.playground.recipe.current.steps.length) {
@@ -167,7 +167,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
 	 * @description Discard implicit preparation save. This trigger a preparation delete.
 	 */
-	vm.discardSaveOnClose = function discardSaveOnClose() {
+	vm.discardSaveOnClose = () => {
 		PreparationService.delete(state.playground.preparation).then(PlaygroundService.close);
 	};
 
@@ -177,7 +177,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
 	 * @description Save implicit preparation with provided name. The playground is then closed.
 	 */
-	vm.confirmSaveOnClose = function confirmSaveOnClose() {
+	vm.confirmSaveOnClose = () => {
 		vm.saveInProgress = true;
 		StateService.setIsSavingPreparation(true);
 		let operation;
@@ -211,7 +211,7 @@ export default function PlaygroundCtrl($state, $stateParams, state, StateService
 	 * @description Change the dataset parameters
 	 * @param {object} parameters The new dataset parameters
 	 */
-	vm.changeDatasetParameters = function changeDatasetParameters(parameters) {
+	vm.changeDatasetParameters = (parameters) => {
 		StateService.setIsSendingDatasetParameters(true);
 		PlaygroundService.changeDatasetParameters(parameters)
 			.then(StateService.hideDatasetParameters)
