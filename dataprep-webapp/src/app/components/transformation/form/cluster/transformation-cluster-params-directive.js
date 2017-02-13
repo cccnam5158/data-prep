@@ -29,6 +29,7 @@ export default function TransformClusterParams($timeout) {
 		templateUrl: template,
 		scope: {
 			details: '=',
+			isReadonly: '<',
 		},
 		bindToController: true,
 		controllerAs: 'clusterParamsCtrl',

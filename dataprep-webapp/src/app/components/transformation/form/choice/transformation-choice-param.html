@@ -14,26 +14,43 @@
   -->
 
 <div class="param">
-    <div class="param-row">
+    <div ng-class="{'param-row' : choiceParamCtrl.parameter.type === 'boolean'}">
         <div class="param-name"
              data-prep-tooltip="{{::choiceParamCtrl.parameter.description}}">{{::choiceParamCtrl.parameter.label}}{{:: 'COLON' | translate}}</div>
 
-        <div class="param-input" ng-switch="!!choiceParamCtrl.parameter.radio">
-            <select ng-switch-when="false"
-                    ng-model="choiceParamCtrl.parameter.value"
-                    ng-options="option.value as option.label for option in choiceParamCtrl.parameter.configuration.values"
-                    can-be-blank="{{::choiceParamCtrl.parameter.canBeBlank}}"></select>
-
-            <div class="param-input-radio"
-                 ng-switch-when="true"
-                 ng-repeat="option in choiceParamCtrl.parameter.configuration.values track by option.value">
-                <label>
-                    <input type="radio"
-                           ng-value="option.value"
-                           ng-model="choiceParamCtrl.parameter.value">
-                    <span>{{::option.label}}</span>
-                </label>
+        <div ng-switch="!!choiceParamCtrl.isReadonly">
+            <div class="param-input" ng-switch-when="true" ng-switch="!!choiceParamCtrl.parameter.radio">
+                <span ng-switch-when="false" class="param-input-label">{{choiceParamCtrl.getLabelByValue(choiceParamCtrl.parameter.value)}}</span>
+                <div class="param-input-radio"
+                     ng-switch-when="true"
+                     ng-repeat="option in choiceParamCtrl.parameter.configuration.values track by option.value">
+                    <label>
+                        <input type="radio"
+                               ng-value="option.value"
+                               ng-model="choiceParamCtrl.parameter.value"
+                               disabled>
+                        <span>{{::option.label}}</span>
+                    </label>
+                </div>
             </div>
+            <div class="param-input" ng-switch-when="false" ng-switch="!!choiceParamCtrl.parameter.radio">
+                <select ng-switch-when="false"
+                        ng-model="choiceParamCtrl.parameter.value"
+                        ng-options="option.value as option.label for option in choiceParamCtrl.parameter.configuration.values"
+                        can-be-blank="{{::choiceParamCtrl.parameter.canBeBlank}}"></select>
+
+                <div class="param-input-radio"
+                     ng-switch-when="true"
+                     ng-repeat="option in choiceParamCtrl.parameter.configuration.values track by option.value">
+                    <label>
+                        <input type="radio"
+                               ng-value="option.value"
+                               ng-model="choiceParamCtrl.parameter.value">
+                        <span>{{::option.label}}</span>
+                    </label>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

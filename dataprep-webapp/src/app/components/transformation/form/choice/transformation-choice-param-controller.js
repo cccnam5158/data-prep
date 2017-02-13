@@ -39,5 +39,15 @@ export default function TransformChoiceParamCtrl() {
 		}
 	};
 
+	/**
+	 * @ngdoc method
+	 * @name getLabelByValue
+	 * @methodOf data-prep.transformation-form.controller:TransformChoiceParamCtrl
+	 * @description get label to display by value
+	 */
+	vm.getLabelByValue = (value) => {
+		return _.find(vm.parameter.configuration.values, {value}).label;
+	};
+
 	initParamValues();
 }
