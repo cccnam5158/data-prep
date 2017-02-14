@@ -61,7 +61,7 @@
 
                         <span class="filter-icon"
                               data-icon="q" ng-if="step.filters.length"
-                              title="{{'FILTERS_APPLIED' | translate}} {{$ctrl.getAllFiltersNames(step.filters)}}">
+                              title="{{'FILTERS_APPLIED' | translate}} {{$ctrl.RecipeService.getAllFiltersNames(step.filters)}}">
                         </span>
                     </trigger>
 
@@ -75,7 +75,7 @@
 
                         </div>
                         <div class="step-parameters-list" ng-if="step.transformation.name !== 'lookup'">
-                            <transform-form ng-if="$ctrl.hasStaticParams(step)"
+                            <transform-form ng-if="$ctrl.RecipeService.hasStaticParams(step)"
                                             transformation="step.transformation"
                                             on-submit="$ctrl.stepUpdateClosure(step)(params)"
                                             on-submit-hover-on="$ctrl.previewUpdateClosure(step)(params)"
