@@ -16,22 +16,17 @@
 <div class="param">
     <div ng-class="{'param-row' : simpleParamCtrl.parameter.type === 'boolean'}">
         <div class="param-name"
-             data-prep-tooltip="{{::simpleParamCtrl.parameter.description}}"
-             ng-if="simpleParamCtrl.parameter.type !== 'boolean'">
+             data-prep-tooltip="{{::simpleParamCtrl.parameter.description}}">
             {{::simpleParamCtrl.parameter.label}}<span translate-once="COLON"></span>
         </div>
         <div ng-switch="!!simpleParamCtrl.isReadonly">
             <div class="param-input" ng-switch-when="true">
                 <span class="param-input-label"  ng-if="simpleParamCtrl.parameter.type  !== 'boolean'" ng-bind="simpleParamCtrl.parameter.value"></span>
-                <div ng-if="simpleParamCtrl.parameter.type  === 'boolean'">
-                    <input name="{{::(simpleParamCtrl.parameter.name)}}"
-                           type="{{::simpleParamCtrl.parameter.inputType}}"
-                           ng-model="simpleParamCtrl.parameter.value"
-                           disabled/>
-                    <span>
-                        {{simpleParamCtrl.parameter.label ? simpleParamCtrl.parameter.label : simpleParamCtrl.parameter.name}}
-                    </span>
-                </div>
+                <input ng-if="simpleParamCtrl.parameter.type  === 'boolean'"
+                       name="{{::(simpleParamCtrl.parameter.name)}}"
+                       type="{{::simpleParamCtrl.parameter.inputType}}"
+                       ng-model="simpleParamCtrl.parameter.value"
+                       ng-disabled="!!simpleParamCtrl.isReadonly"/>
             </div>
             <div  ng-switch-when="false">
                 <div class="param-input" ng-if="simpleParamCtrl.editableSelect">
@@ -47,9 +42,6 @@
                            ng-trim="false"
                            is-type="{{::simpleParamCtrl.parameter.type}}"
                            can-be-blank="{{::simpleParamCtrl.parameter.canBeBlank}}"/>
-                    <span ng-if="::(simpleParamCtrl.parameter.type === 'boolean')">
-                        {{simpleParamCtrl.parameter.label ? simpleParamCtrl.parameter.label : simpleParamCtrl.parameter.name}}
-                    </span>
                 </div>
             </div>
         </div>

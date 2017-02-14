@@ -13,21 +13,27 @@
   ~ ============================================================================
   -->
 
-<div class="editable-regex">
-    <talend-dropdown force-side="left">
-        <button class="dropdown-action" type="button">{{editableRegexCtrl.getTypeKey()}}</button>
-        <ul class="dropdown-menu">
-            <li ng-repeat="type in ::editableRegexCtrl.types track by $index"
-                ng-click="editableRegexCtrl.setSelectedType(type)"
-                class="regex-type-item">
-                <div class="regex-type-item-key">{{::type.key}}</div>
-                <div class="regex-type-item-label">{{::type.label}}</div>
-            </li>
-        </ul>
-    </talend-dropdown>
+<div class="editable-regex" ng-switch="!!editableRegexCtrl.isReadonly">
+    <div ng-switch-when="false">
+        <talend-dropdown force-side="left">
+            <button class="dropdown-action" type="button">{{editableRegexCtrl.getTypeKey()}}</button>
+            <ul class="dropdown-menu">
+                <li ng-repeat="type in ::editableRegexCtrl.types track by $index"
+                    ng-click="editableRegexCtrl.setSelectedType(type)"
+                    class="regex-type-item">
+                    <div class="regex-type-item-key">{{::type.key}}</div>
+                    <div class="regex-type-item-label">{{::type.label}}</div>
+                </li>
+            </ul>
+        </talend-dropdown>
 
-    <input type="text"
-           ng-model="editableRegexCtrl.value.token"
-           ng-trim="false"
-           ng-model-options="{debounce: { 'default': 300, 'blur': 0 }}"/>
+        <input type="text"
+               ng-model="editableRegexCtrl.value.token"
+               ng-trim="false"
+               ng-model-options="{debounce: { 'default': 300, 'blur': 0 }}"/>
+    </div>
+    <div ng-switch-when="true">
+        <span class="editable-regex-label" ng-bind="editableRegexCtrl.getTypeLabel()"></span>
+        <span class="editable-regex-label" ng-bind="editableRegexCtrl.value.token"></span>
+    </div>
 </div>
