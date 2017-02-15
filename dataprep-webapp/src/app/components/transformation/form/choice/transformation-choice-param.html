@@ -22,9 +22,8 @@
             <div ng-switch-when="false">
                 <div ng-switch="!!choiceParamCtrl.isReadonly">
                     <span ng-switch-when="true" class="param-input-label">{{choiceParamCtrl.getLabelByValue(choiceParamCtrl.parameter.value)}}</span>
-                    <div ng-switch-when="false" class="param-input" >
-                        <select ng-switch-when="false"
-                                ng-model="choiceParamCtrl.parameter.value"
+                    <div ng-switch-when="false">
+                        <select ng-model="choiceParamCtrl.parameter.value"
                                 ng-options="option.value as option.label for option in choiceParamCtrl.parameter.configuration.values"
                                 can-be-blank="{{::choiceParamCtrl.parameter.canBeBlank}}"></select>
                     </div>

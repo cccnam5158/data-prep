@@ -31,7 +31,17 @@ describe('Suggestions stats directive', () => {
     beforeEach(inject(($rootScope, $compile, $timeout) => {
         scope = $rootScope.$new();
         createElement = () => {
-            element = angular.element('<suggestions-stats></suggestions-stats>');
+            element = angular.element(
+                '<suggestions-stats>' +
+                '   <sc-splitter class="suggestions-stats-content" orientation="vertical">' +
+                '       <sc-split-first-pane id="help-suggestions">' +
+                '           <actions-suggestions class="suggestions-part"></actions-suggestions>' +
+                '               </sc-split-first-pane>' +
+                '       <sc-split-second-pane id="help-stats">' +
+                '           <stats-details class="stats-part"></stats-details>' +
+                '       </sc-split-second-pane>' +
+                '   </sc-splitter>' +
+                '</suggestions-stats>');
             $compile(element)(scope);
             scope.$digest();
             $timeout.flush();
@@ -56,9 +66,6 @@ describe('Suggestions stats directive', () => {
 
 
     it('should render suggestions/stats splitter', inject(() => {
-        //given
-        stateMock.playground.isReadOnly = false;
-
         //when
         createElement();
 
@@ -66,16 +73,5 @@ describe('Suggestions stats directive', () => {
         expect(element.find('sc-splitter').length).toBe(1);
         expect(element.find('sc-splitter sc-split-first-pane actions-suggestions').length).toBe(1);
         expect(element.find('sc-splitter sc-split-second-pane stats-details').length).toBe(1);
-    }));
-
-    it('should render stats panel when the playground is readonly', inject(() => {
-        //given
-        stateMock.playground.isReadOnly = true;
-
-        //when
-        createElement();
-
-        //then
-        expect(element.find('.playground-readonly').length).toBe(1);
     }));
 });

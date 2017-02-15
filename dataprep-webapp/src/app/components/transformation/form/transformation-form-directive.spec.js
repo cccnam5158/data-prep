@@ -11,7 +11,7 @@
 
   ============================================================================*/
 
-describe('Transformation params directive', function () {
+describe('Transformation form directive', function () {
     'use strict';
     var scope;
     var createElement;

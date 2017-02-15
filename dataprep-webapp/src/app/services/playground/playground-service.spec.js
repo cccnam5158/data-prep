@@ -53,6 +53,11 @@ describe('Playground Service', () => {
 				filter: {},
 				grid: {},
 				sampleType: 'HEAD',
+				data: {
+					metadata: {
+						columns: [{ id: '0001', statistics: { frequencyTable: [{ toto: 2 }] } }],
+					},
+				},
 			},
 			inventory: { homeFolderId: 'Lw==' },
 		};
@@ -204,7 +209,7 @@ describe('Playground Service', () => {
 			expect(PreparationService.preparationName).toBeFalsy();
 
 			// when
-			PlaygroundService.initPlayground(dataset);
+			PlaygroundService.loadDataset(dataset);
 			$rootScope.$digest();
 
 			// then
@@ -216,7 +221,7 @@ describe('Playground Service', () => {
 			expect($rootScope.$emit).not.toHaveBeenCalled();
 
 			// when
-			PlaygroundService.initPlayground(dataset);
+			PlaygroundService.loadDataset(dataset);
 			expect($rootScope.$emit).toHaveBeenCalledWith('talend.loading.start');
 			$rootScope.$digest();
 
@@ -229,7 +234,7 @@ describe('Playground Service', () => {
 			PlaygroundService.preparationName = 'preparation name';
 
 			// when
-			PlaygroundService.initPlayground(dataset);
+			PlaygroundService.loadDataset(dataset);
 			$rootScope.$digest();
 
 			// then
@@ -243,7 +248,7 @@ describe('Playground Service', () => {
 			PlaygroundService.preparationName = 'preparation name';
 
 			// when
-			PlaygroundService.initPlayground(dataset);
+			PlaygroundService.loadDataset(dataset);
 			$rootScope.$digest();
 			$timeout.flush(300);
 
@@ -259,7 +264,7 @@ describe('Playground Service', () => {
 			PlaygroundService.preparationName = 'preparation name';
 
 			// when
-			PlaygroundService.initPlayground(dataset);
+			PlaygroundService.loadDataset(dataset);
 			$rootScope.$digest();
 			$timeout.flush(300);
 
@@ -330,7 +335,7 @@ describe('Playground Service', () => {
 			stateMock.playground.dataset = dataset;
 
 			// when
-			PlaygroundService.load(preparation);
+			PlaygroundService.loadPreparation(preparation);
 			$rootScope.$apply();
 
 			// then
@@ -342,7 +347,7 @@ describe('Playground Service', () => {
 			stateMock.playground.preparation = { id: '5746518486846' };
 
 			// when
-			PlaygroundService.load(preparation);
+			PlaygroundService.loadPreparation(preparation);
 			expect($rootScope.$emit).toHaveBeenCalledWith('talend.loading.start');
 			$rootScope.$apply();
 
@@ -356,7 +361,7 @@ describe('Playground Service', () => {
 				stateMock.playground.preparation = { id: '5746518486846' };
 
 				// when
-				PlaygroundService.load(preparation);
+				PlaygroundService.loadPreparation(preparation);
 				$rootScope.$apply();
 
 				// then
