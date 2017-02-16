@@ -23,7 +23,8 @@
         </div>
         <div class="param-input" ng-switch="!!columnParamCtrl.isReadonly">
             <div ng-switch-when="true">
-                <span class="param-input-label">{{columnParamCtrl.getLabelById(columnParamCtrl.parameter.value)}}</span>
+                <span class="param-input-label" ng-if="columnParamCtrl.parameter.value !== ''">{{columnParamCtrl.getLabelById(columnParamCtrl.parameter.value)}}</span>
+                <span class="param-input-label-none" ng-if="columnParamCtrl.parameter.value === ''" translate-once="NONE"></span>
             </div>
             <div ng-switch-when="false">
                 <select ng-model="columnParamCtrl.parameter.value"

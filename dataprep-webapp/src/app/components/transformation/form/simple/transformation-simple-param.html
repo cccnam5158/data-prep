@@ -21,7 +21,8 @@
         </div>
         <div ng-switch="!!simpleParamCtrl.isReadonly">
             <div class="param-input" ng-switch-when="true">
-                <span class="param-input-label"  ng-if="simpleParamCtrl.parameter.type  !== 'boolean'" ng-bind="simpleParamCtrl.parameter.value"></span>
+                <span class="param-input-label"  ng-if="simpleParamCtrl.parameter.type  !== 'boolean' && simpleParamCtrl.parameter.value !== ''" ng-bind="simpleParamCtrl.parameter.value"></span>
+                <span class="param-input-label-none"  ng-if="simpleParamCtrl.parameter.type  !== 'boolean' && simpleParamCtrl.parameter.value === ''" translate-once="NONE"></span>
                 <input ng-if="simpleParamCtrl.parameter.type  === 'boolean'"
                        name="{{::(simpleParamCtrl.parameter.name)}}"
                        type="{{::simpleParamCtrl.parameter.inputType}}"

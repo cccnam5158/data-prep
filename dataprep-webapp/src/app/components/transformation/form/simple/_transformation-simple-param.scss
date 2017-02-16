@@ -31,6 +31,7 @@
 		flex-basis: 20px;
 		flex-grow: 1;
 		width: 100%;
+		color: $medium-gray;
 	}
 
 	.param-input {
@@ -44,8 +45,12 @@
 	}
 
 	.param-input-label {
-		font-weight: bold;
 		font-size: 1.2em;
+	}
+
+	.param-input-label-none {
+		font-size: 1.2em;
+		color: $medium-gray;
 	}
 
 	.param-row {
