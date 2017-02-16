@@ -175,7 +175,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 			})
 			.then(() => {
 				if (shouldFetchStatistics()) {
-					fetchStatistics();
+					fetchStatistics.call(this);
 				}
 			})
 			.catch(() => errorGoBack(true, { type: 'dataset' }))
@@ -209,7 +209,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 			))
 			.then(() => {
 				if (shouldFetchStatistics()) {
-					fetchStatistics();
+					fetchStatistics.call(this);
 				}
 			})
 			.catch(() => errorGoBack(true, { type: 'preparation' }))
@@ -745,7 +745,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 					return loadStep(activeStep);
 				}
 				else {
-					loadDataset.call(this, dataset);
+					this.loadDataset.call(this, dataset);
 				}
 			});
 	}
@@ -786,7 +786,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 	/**
 	 * @ngdoc method
 	 * @name shouldFetchStatistics
-	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
+	 * @methodOf data-prep.services.playground.service:PlaygroundService
 	 * @description Check if we have the statistics or we have to fetch them
 	 */
 	function shouldFetchStatistics() {
@@ -799,15 +799,15 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 	/**
 	 * @ngdoc method
 	 * @name fetchStatistics
-	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
+	 * @methodOf data-prep.services.playground.service:PlaygroundService
 	 * @description Fetch the statistics. If the update fails (no statistics yet) a retry is triggered after 1s
 	 */
 	function fetchStatistics() {
 		StateService.setIsFetchingStats(true);
-		updateStatistics()
+		this.updateStatistics()
 			.then(() => StateService.setIsFetchingStats(false))
 			.catch(() => {
-				fetchStatsTimeout = $timeout(fetchStatistics, 1500, false);
+				fetchStatsTimeout = $timeout(() => fetchStatistics.call(this), 1500, false);
 			});
 	}
 
@@ -828,7 +828,8 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 
 	/**
 	 * @ngdoc method
-	 * @name loadPreparation
+	 * @name initPreparation
+	 * @methodOf data-prep.services.playground.service:PlaygroundService
 	 * @description open a preparation
 	 */
 	function initPreparation() {
@@ -858,7 +859,8 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 
 	/**
 	 * @ngdoc method
-	 * @name loadDataset
+	 * @name initDataset
+	 * @methodOf data-prep.services.playground.service:PlaygroundService
 	 * @description open a dataset
 	 */
 	function initDataset() {
@@ -867,7 +869,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 		startLoader();
 		DatasetService.getMetadata($stateParams.datasetid)
 			.then((dataset) => {
-				loadDataset.call(this, dataset);
+				this.loadDataset.call(this, dataset);
 				return dataset;
 			})
 			.catch(() => {
@@ -896,7 +898,7 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 	/**
 	 * @ngdoc method
 	 * @name close
-	 * @methodOf data-prep.playground.controller:PlaygroundCtrl
+	 * @methodOf data-prep.services.playground.service:PlaygroundService
 	 * @description Playground close callback. It reset the playground and redirect to the previous page
 	 */
 	function close() {

@@ -101,9 +101,7 @@ describe('Playground controller', () => {
 	}));
 
 	describe('initialization', () => {
-		beforeEach(inject((MessageService, StateService) => {
-			spyOn(StateService, 'setIsFetchingStats').and.returnValue();
-			spyOn(MessageService, 'error').and.returnValue();
+		beforeEach(inject(() => {
 			stateMock.inventory = {
 				preparations,
 				datasets,
