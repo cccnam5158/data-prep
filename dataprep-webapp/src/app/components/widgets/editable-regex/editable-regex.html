@@ -34,7 +34,15 @@
     </div>
     <div ng-switch-when="true">
         <span title="{{editableRegexCtrl.getTypeLabel()}}" ng-bind="editableRegexCtrl.getTypeKey()"></span>
-        <span ng-if="editableRegexCtrl.transformText" ng-bind-html="editableRegexCtrl.transformText(editableRegexCtrl.value.token)"></span>
-        <span ng-if="!editableRegexCtrl.transformText" ng-bind="editableRegexCtrl.value.token"></span>
+        <span ng-switch="editableRegexCtrl.value.token ===''">
+             <span ng-switch-when="true" class="label-none">{{'NONE' | translate}}</span>
+             <span ng-switch-when="false">
+                  <span ng-switch="!!editableRegexCtrl.transformText">
+                     <span ng-switch-when="true"
+                           ng-bind-html="editableRegexCtrl.transformText(editableRegexCtrl.value.token)"></span>
+                     <span ng-switch-when="false" ng-bind="editableRegexCtrl.value.token"></span>
+                  </span>
+             </span>
+        </span>
     </div>
 </div>
