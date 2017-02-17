@@ -11,32 +11,32 @@
 
   ============================================================================*/
 
-describe('Transformation form directive', function () {
+describe('Transformation form directive', () => {
     'use strict';
-    var scope;
-    var createElement;
+    let scope;
+    let createElement;
 
     beforeEach(angular.mock.module('data-prep.transformation-form'));
 
-    beforeEach(angular.mock.module('pascalprecht.translate', function ($translateProvider) {
+    beforeEach(angular.mock.module('pascalprecht.translate', ($translateProvider) => {
         $translateProvider.translations('en', {
             COLON: ': ',
         });
         $translateProvider.preferredLanguage('en');
     }));
 
-    beforeEach(inject(function ($rootScope, $compile) {
+    beforeEach(inject(($rootScope, $compile) => {
         scope = $rootScope.$new();
 
-        createElement = function () {
-            var element = angular.element('<transform-form transformation="transformation" on-submit="onSubmit"></transform-form>');
+        createElement = () => {
+            let element = angular.element('<transform-form transformation="transformation" on-submit="onSubmit" is-readonly="isReadonly"></transform-form>');
             $compile(element)(scope);
             scope.$digest();
             return element;
         };
     }));
 
-    it('should render an action with parameters', function () {
+    it('should render an action with parameters', () => {
         //given
         scope.transformation = {
             name: 'menuWithParam',
@@ -60,7 +60,7 @@ describe('Transformation form directive', function () {
         };
 
         //when
-        var element = createElement();
+        let element = createElement();
 
         //then
         expect(element.find('.param-name').length).toBe(2);
@@ -71,7 +71,7 @@ describe('Transformation form directive', function () {
         expect(element.find('.param-input').eq(1).find('input[type="number"]').length).toBe(1);
     });
 
-    it('should render an action with simple choice', function () {
+    it('should render an action with simple choice', () => {
         //given
         scope.transformation = {
             name: 'menuXithParam',
@@ -93,10 +93,10 @@ describe('Transformation form directive', function () {
         };
 
         //when
-        var element = createElement();
+        let element = createElement();
 
         //then
-        var paramChoice = element.find('.param').eq(0);
+        let paramChoice = element.find('.param').eq(0);
         expect(paramChoice.find('.param-name').length).toBe(1);
         expect(paramChoice.find('.param-name').eq(0).text().trim()).toBe('my choice:');
         expect(paramChoice.find('.param-input').length).toBe(1);
@@ -106,9 +106,9 @@ describe('Transformation form directive', function () {
         expect(paramChoice.find('.param-input').eq(0).find('option').eq(1).text()).toBe('noParamChoice2');
     });
 
-    it('should render an action with choice containing parameters', function () {
+    it('should render an action with choice containing parameters', () => {
         //given
-        var parameter = {
+        let parameter = {
             name: 'my choice',
             label: 'my choice',
             type: 'select',
@@ -141,8 +141,8 @@ describe('Transformation form directive', function () {
             name: 'menu with param',
             parameters: [parameter],
         };
-        var element = createElement();
-        var renderedParams = element.find('transform-params').eq(0);
+        let element = createElement();
+        let renderedParams = element.find('transform-params').eq(0);
 
         //when
         parameter.value = parameter.configuration.values[0];
@@ -165,7 +165,7 @@ describe('Transformation form directive', function () {
         expect(renderedParams.find('.param-input').eq(2).find('input[type="number"]').length).toBe(1);
     });
 
-    it('should render an action with cluster parameters', function () {
+    it('should render an action with cluster parameters', () => {
         //given
         scope.transformation = {
             name: 'menu with param',
@@ -258,13 +258,13 @@ describe('Transformation form directive', function () {
         };
 
         //when
-        var element = createElement();
+        let element = createElement();
 
         //then
         expect(element.find('.cluster').length).toBe(1);
     });
 
-    it('should render doc link when there is a docUrl parameter', function () {
+    it('should render doc link when there is a docUrl parameter', () => {
         //given
         scope.transformation = {
             name: 'menuWithParam',
@@ -289,10 +289,32 @@ describe('Transformation form directive', function () {
         };
 
         //when
-        var element = createElement();
+        let element = createElement();
 
         //then
-        var docLink = element.find('.param-buttons > a').eq(0);
+        let docLink = element.find('.param-buttons > a').eq(0);
         expect(docLink.attr('href')).toBe('http://www.google.com');
+    });
+
+    it('should render submit button', () => {
+        //given
+        scope.isReadonly = false;
+
+        //when
+        let element = createElement();
+
+        //then
+        expect(element.find('.param-buttons > button').length).toBe(1);
+    });
+
+    it('should not render submit button', () => {
+        //given
+        scope.isReadonly = true;
+
+        //when
+        let element = createElement();
+
+        //then
+        expect(element.find('.param-buttons > button').length).toBe(0);
     });
 });
