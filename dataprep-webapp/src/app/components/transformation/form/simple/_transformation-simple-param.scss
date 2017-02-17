@@ -32,24 +32,27 @@
 		flex-grow: 1;
 		width: 100%;
 		color: $medium-gray;
+		font-size: 12px;
 	}
 
 	.param-input {
 		flex-basis: 20px;
 		flex-grow: 1;
 		width: 100%;
+		font-size: 14px;
+
+		.hiddenChars {
+			white-space: pre;
+			background-color: #E9E9E9;
+			border: 1px dotted #BABABA;
+		}
 	}
 
 	.param-error {
 		flex-basis: 100%;
 	}
 
-	.param-input-label {
-		font-size: 1.2em;
-	}
-
 	.param-input-label-none {
-		font-size: 1.2em;
 		color: $medium-gray;
 	}
 

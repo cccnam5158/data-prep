@@ -16,33 +16,49 @@
 <div class="param">
     <div ng-class="{'param-row' : simpleParamCtrl.parameter.type === 'boolean'}">
         <div class="param-name"
-             data-prep-tooltip="{{::simpleParamCtrl.parameter.description}}">
+             data-prep-tooltip="{{::simpleParamCtrl.parameter.description}}"
+             ng-if="simpleParamCtrl.parameter.type !== 'boolean'">
             {{::simpleParamCtrl.parameter.label}}<span translate-once="COLON"></span>
         </div>
         <div ng-switch="!!simpleParamCtrl.isReadonly">
             <div class="param-input" ng-switch-when="true">
-                <span class="param-input-label"  ng-if="simpleParamCtrl.parameter.type  !== 'boolean' && simpleParamCtrl.parameter.value !== ''" ng-bind="simpleParamCtrl.parameter.value"></span>
-                <span class="param-input-label-none"  ng-if="simpleParamCtrl.parameter.type  !== 'boolean' && simpleParamCtrl.parameter.value === ''" translate-once="NONE"></span>
-                <input ng-if="simpleParamCtrl.parameter.type  === 'boolean'"
-                       name="{{::(simpleParamCtrl.parameter.name)}}"
-                       type="{{::simpleParamCtrl.parameter.inputType}}"
-                       ng-model="simpleParamCtrl.parameter.value"
-                       ng-disabled="!!simpleParamCtrl.isReadonly"/>
+                <div ng-switch="simpleParamCtrl.parameter.type  !== 'boolean'">
+                    <span ng-switch-when="true">
+                        <span class="param-input-label" ng-if="simpleParamCtrl.parameter.value !== ''"
+                              ng-bind-html="simpleParamCtrl.TextFormatService.adaptToGridConstraints(simpleParamCtrl.parameter.value)"></span>
+                        <span class="param-input-label-none" ng-if="simpleParamCtrl.parameter.value === ''"
+                              translate-once="NONE"></span>
+                    </span>
+                    <div ng-switch-when="false">
+                        <input name="{{::(simpleParamCtrl.parameter.name)}}"
+                               type="{{::simpleParamCtrl.parameter.inputType}}"
+                               ng-model="simpleParamCtrl.parameter.value"
+                               ng-disabled="!!simpleParamCtrl.isReadonly"/>
+                        <span>
+                            {{simpleParamCtrl.parameter.label ? simpleParamCtrl.parameter.label : simpleParamCtrl.parameter.name}}
+                        </span>
+                    </div>
+                </div>
             </div>
             <div  ng-switch-when="false">
-                <div class="param-input" ng-if="simpleParamCtrl.editableSelect">
-                    <editable-select
-                            list="simpleParamCtrl.parameter.list"
-                            ng-model="simpleParamCtrl.parameter.value"></editable-select>
-                </div>
-                <div class="param-input" ng-if="!simpleParamCtrl.editableSelect">
-                    <input name="{{::(simpleParamCtrl.parameter.name)}}"
-                           type="{{::simpleParamCtrl.parameter.inputType}}"
-                           ng-model="simpleParamCtrl.parameter.value"
-                           ng-model-options="{debounce: { 'default': 200, 'blur': 0 }}"
-                           ng-trim="false"
-                           is-type="{{::simpleParamCtrl.parameter.type}}"
-                           can-be-blank="{{::simpleParamCtrl.parameter.canBeBlank}}"/>
+                <div ng-switch="!!simpleParamCtrl.editableSelect">
+                    <div class="param-input" ng-switch-when="true">
+                        <editable-select
+                                list="simpleParamCtrl.parameter.list"
+                                ng-model="simpleParamCtrl.parameter.value"></editable-select>
+                    </div>
+                    <div class="param-input" ng-switch-when="false">
+                        <input name="{{::(simpleParamCtrl.parameter.name)}}"
+                               type="{{::simpleParamCtrl.parameter.inputType}}"
+                               ng-model="simpleParamCtrl.parameter.value"
+                               ng-model-options="{debounce: { 'default': 200, 'blur': 0 }}"
+                               ng-trim="false"
+                               is-type="{{::simpleParamCtrl.parameter.type}}"
+                               can-be-blank="{{::simpleParamCtrl.parameter.canBeBlank}}"/>
+                        <span ng-if="simpleParamCtrl.parameter.type  === 'boolean'">
+                            {{simpleParamCtrl.parameter.label ? simpleParamCtrl.parameter.label : simpleParamCtrl.parameter.name}}
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>

@@ -17,10 +17,11 @@
  * @description Simple transformation parameter controller.
  * @requires data-prep.services.utils.service:ConverterService
  */
-export default function TransformSimpleParamCtrl(ConverterService) {
+export default function TransformSimpleParamCtrl(ConverterService, TextFormatService) {
 	'ngInject';
 
 	const vm = this;
+	vm.TextFormatService = TextFormatService;
 
     /**
      * @ngdoc method

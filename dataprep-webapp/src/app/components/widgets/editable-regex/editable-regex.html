@@ -33,7 +33,8 @@
                ng-model-options="{debounce: { 'default': 300, 'blur': 0 }}"/>
     </div>
     <div ng-switch-when="true">
-        <span class="editable-regex-label" title="{{editableRegexCtrl.getTypeLabel()}}" ng-bind="editableRegexCtrl.getTypeKey()"></span>
-        <span class="editable-regex-label" ng-bind="editableRegexCtrl.value.token"></span>
+        <span title="{{editableRegexCtrl.getTypeLabel()}}" ng-bind="editableRegexCtrl.getTypeKey()"></span>
+        <span ng-if="editableRegexCtrl.transformText" ng-bind-html="editableRegexCtrl.transformText(editableRegexCtrl.value.token)"></span>
+        <span ng-if="!editableRegexCtrl.transformText" ng-bind="editableRegexCtrl.value.token"></span>
     </div>
 </div>
