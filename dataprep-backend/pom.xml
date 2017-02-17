@@ -23,7 +23,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>1.7.22</slf4j.version>
-        <logback.version>1.1.9</logback.version>
         <java.version>1.8</java.version>
         <junit.version>4.12</junit.version>
         <tika.version>1.12</tika.version>
@@ -389,25 +388,6 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>log4j-over-slf4j</artifactId>
                 <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <!-- see performances warnings at https://www.slf4j.org/legacy.html#jul-to-slf4j -->
-                <!-- number of JUL calls must be low to prevent too much of performance impact -->
-                <groupId>org.slf4j</groupId>
-                <artifactId>jul-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
-                <scope>test</scope>
             </dependency>
 
             <dependency>
