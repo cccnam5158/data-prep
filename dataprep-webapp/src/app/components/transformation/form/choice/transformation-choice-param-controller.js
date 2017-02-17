@@ -46,7 +46,7 @@ export default function TransformChoiceParamCtrl() {
 	 * @description get label to display by value
 	 */
 	vm.getLabelByValue = (value) => {
-		return _.find(vm.parameter.configuration.values, {value}).label;
+		return _.find(vm.parameter.configuration.values, { value }).label;
 	};
 
 	initParamValues();

@@ -32,7 +32,7 @@
  */
 
 import { map } from 'lodash';
-import { PLAYGROUND_PREPARATION_ROUTE,PLAYGROUND_DATASET_ROUTE, HOME_DATASETS_ROUTE, HOME_PREPARATIONS_ROUTE} from '../../index-route';
+import { PLAYGROUND_PREPARATION_ROUTE, PLAYGROUND_DATASET_ROUTE, HOME_DATASETS_ROUTE, HOME_PREPARATIONS_ROUTE } from '../../index-route';
 // actions scopes
 const LINE = 'line';
 
@@ -854,7 +854,6 @@ export default function PlaygroundService($state, $rootScope, $q, $translate, $t
 				stopLoader();
 				return errorGoBack(false);
 			});
-
 	}
 
 	/**

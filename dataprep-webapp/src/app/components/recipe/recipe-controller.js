@@ -10,9 +10,6 @@
  9 rue Pages 92150 Suresnes, France
 
  ============================================================================*/
-
-import _ from 'lodash';
-
 const CLUSTER_TYPE = 'CLUSTER';
 
 /**

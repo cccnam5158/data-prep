@@ -44,7 +44,7 @@ export default function TransformColumnParamCtrl(state) {
 	 * @description get Label by id
 	 */
 	vm.getLabelById = (id) => {
-		return _.find(vm.columns, {id}).name;
+		return _.find(vm.columns, { id }).name;
 	};
 
 	initDefaultValue();

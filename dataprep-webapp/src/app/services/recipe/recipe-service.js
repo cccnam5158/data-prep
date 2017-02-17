@@ -33,7 +33,7 @@ export default function RecipeService(state, StateService, StepUtilsService, Pre
 		earlyPreview,
 		cancelEarlyPreview,
 
-		//utils
+		// utils
 		isStartChain,
 		isEndChain,
 		isLastActive,
